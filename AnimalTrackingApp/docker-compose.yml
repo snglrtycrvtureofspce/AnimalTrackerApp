@@ -1,40 +1,39 @@
-version: '3.9'
+version: '3.4'
 
 services:
-# Сервис для разворачивания контейнера с базой данных
-  database:
-    image: postgres:latest
-    volumes:
-      - /var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=animal-chipization
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+  animaltrackingapp:
+    image: ${DOCKER_REGISTRY-}animaltrackingapp
+    build:
+      context: .
+      dockerfile: Dockerfile
 
 
-# Сервис для разворачивания контейнера с приложением
+# РЎРµСЂРІРёСЃ РґР»СЏ СЂР°Р·РІРѕСЂР°С‡РёРІР°РЅРёСЏ РєРѕРЅС‚РµР№РЅРµСЂР° СЃ РїСЂРёР»РѕР¶РµРЅРёРµРј
   webapi:
-    image: webapi
+    build: .
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8080:5000"
     depends_on:
-      - database
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/animal-chipization
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      database:
+          condition: service_healthy
+    healthcheck:
+      test: curl --fail https://localhost:7192/ || exit 1
+      interval: 10s
+      retries: 5
+      timeout: 10s
+    
 
 
-# Сервис для разворачивания контейнера с автотестами
+# РЎРµСЂРІРёСЃ РґР»СЏ СЂР°Р·РІРѕСЂР°С‡РёРІР°РЅРёСЏ РєРѕРЅС‚РµР№РЅРµСЂР° СЃ Р°РІС‚РѕС‚РµСЃС‚Р°РјРё
   tests: 
     image: mrexpen/planet_olymp_phase1
     pull_policy: always
     ports:
       - "8090:8080"
     depends_on:
-      - webapi
+      webapi:
+          condition: service_healthy
     environment:
       SERVER_URL: https://localhost:7192/
-      STAGE: all
-      # all - запуск всех тестов из трёх доступных этапов
-      # 0, 1 или 2 - запуск тестов для соответствующего этапа
+      STAGE: 0

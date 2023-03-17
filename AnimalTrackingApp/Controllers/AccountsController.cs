@@ -26,7 +26,7 @@ public class AccountController : ControllerBase
     [Route("registration")]
     public IActionResult Registration(Account account)
     {
-        // Проверка входных параметров
+        // Проверяем входные параметры
         if (string.IsNullOrWhiteSpace(account.FirstName)
             || string.IsNullOrWhiteSpace(account.LastName)
             || string.IsNullOrWhiteSpace(account.Email)
@@ -37,14 +37,14 @@ public class AccountController : ControllerBase
         }
 
         // Проверка, что аккаунт с таким email не существует
-        bool isEmailExist = false; // Здесь должна быть логика проверки наличия аккаунта в базе данных
+        bool isEmailExist = false; // добавить логику наличия аккаунта в БД
         if (isEmailExist)
         {
             return Conflict();
         }
 
         // Создание нового аккаунта
-        account.Id = 1; // Здесь должна быть логика создания аккаунта в базе данных
+        account.Id = 1; // логика создания аккаунта в БД
         return CreatedAtAction(nameof(GetAccount), new { id = account.Id }, account);
     }
 
@@ -65,8 +65,8 @@ public class AccountController : ControllerBase
     [Route("{id}")]
     public IActionResult GetAccount(int id)
     {
-        // Здесь должна быть логика получения аккаунта из базы данных по его идентификатору
-        Account account = new Account { Id = id, FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" };
+        // логика получения аккаунта из БД по его идентификатору
+        Account account = new Account { Id = id, FirstName = "Aleksandr", LastName = "Zenevich", Email = "aleksandr.zenevich@example.com" };
 
         if (account == null)
         {
@@ -76,14 +76,11 @@ public class AccountController : ControllerBase
         return Ok(account);
     }
 
-    private static List<User> _users = new List<User>()
+    private static List<User> Users = new List<User>()
     {
-        new User { Id = 1, FirstName = "John", LastName = "Doe", Email = "johndoe@example.com", Password = "password" },
-        new User { Id = 2, FirstName = "Jane", LastName = "Doe", Email = "janedoe@example.com", Password = "password" },
-        new User
-        {
-            Id = 3, FirstName = "Bob", LastName = "Smith", Email = "bobsmith@example.com", Password = "password"
-        }
+        new User { Id = 1, FirstName = "Aleksandr", LastName = "Zenevich", Email = "aleksandr.zenevich@example.com", Password = "password" },
+        new User { Id = 2, FirstName = "Oleg", LastName = "Zenevich", Email = "oleg.zenevich@example.com", Password = "password" },
+        new User { Id = 3, FirstName = "Dasha", LastName = "Zenevich", Email = "dasha.zenevich@example.com", Password = "password" }
     };
 
     // Метод для поиска аккаунтов пользователей по заданным параметрам
@@ -92,7 +89,7 @@ public class AccountController : ControllerBase
         int size = 10)
     {
         // Фильтруем список пользователей по заданным параметрам
-        var filteredUsers = _users
+        var filteredUsers = Users
             .Where(u => firstName == null || u.FirstName.ToLower().Contains(firstName.ToLower()))
             .Where(u => lastName == null || u.LastName.ToLower().Contains(lastName.ToLower()))
             .Where(u => email == null || u.Email.ToLower().Contains(email.ToLower()))
@@ -101,8 +98,7 @@ public class AccountController : ControllerBase
             .Take(size)
             .ToList();
 
-        // Возвращаем результат поиска
-        return Ok(filteredUsers);
+        return Ok(filteredUsers); // возвращаем результат поиска
     }
 
     // Метод для обновления данных аккаунта пользователя
@@ -110,7 +106,7 @@ public class AccountController : ControllerBase
     public IActionResult Update(int accountId, User updatedUser)
     {
         // Ищем пользователя с заданным идентификатором
-        var user = _users.FirstOrDefault(u => u.Id == accountId);
+        var user = Users.FirstOrDefault(u => u.Id == accountId);
 
         // Если пользователь не найден, возвращаем 404 ошибку
         if (user == null)
@@ -130,7 +126,7 @@ public class AccountController : ControllerBase
     public IActionResult Delete(int accountId)
     {
         // Ищем пользователя с заданным идентификатором
-        var user = _users.FirstOrDefault(u => u.Id == accountId);
+        var user = Users.FirstOrDefault(u => u.Id == accountId);
 
         // Если пользователь не найден, возвращаем 404 ошибку
         if (user == null)
@@ -139,7 +135,7 @@ public class AccountController : ControllerBase
         }
 
         // Удаляем пользователя из списка
-        _users.Remove(user);
+        Users.Remove(user);
 
         return NoContent();
     }
