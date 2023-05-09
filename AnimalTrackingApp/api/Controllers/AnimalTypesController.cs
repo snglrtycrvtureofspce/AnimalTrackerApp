@@ -19,16 +19,15 @@ namespace api.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"SELECT AnimalTypeID, TypeName, TypeDescription FROM AnimalTypes";
+            var query = @"SELECT AnimalTypeID, TypeName, TypeDescription FROM AnimalTypes";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myConnection))
                 {
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
@@ -40,10 +39,9 @@ namespace api.Controllers
         [HttpPost]
         public JsonResult Post(AnimalTypes animalTypes)
         {
-            string query = @"INSERT INTO AnimalTypes VALUES (@TypeName, @TypeDescription)";
+            var query = @"INSERT INTO AnimalTypes VALUES (@TypeName, @TypeDescription)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
@@ -51,22 +49,21 @@ namespace api.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@TypeName", animalTypes.TypeName);
                     myCommand.Parameters.AddWithValue("@TypeDescription", animalTypes.TypeDescription);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Added Successfully!");
+            return new JsonResult("Успешно добавлено!");
         }
 
         [HttpPut]
         public JsonResult Put(AnimalTypes animalTypes)
         {
-            string query = @"UPDATE AnimalTypes SET TypeName=@TypeName, TypeDescription=@TypeDescription WHERE AnimalTypeID=@AnimalTypeID";
+            var query = @"UPDATE AnimalTypes SET TypeName=@TypeName, TypeDescription=@TypeDescription WHERE AnimalTypeID=@AnimalTypeID";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
@@ -75,35 +72,34 @@ namespace api.Controllers
                     myCommand.Parameters.AddWithValue("@AnimalTypeID", animalTypes.AnimalTypeID);
                     myCommand.Parameters.AddWithValue("@TypeName", animalTypes.TypeName);
                     myCommand.Parameters.AddWithValue("@TypeDescription", animalTypes.TypeDescription);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Updated Successfully!");
+            return new JsonResult("Успешно обновлено!");
         }
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            string query = @"DELETE FROM AnimalTypes WHERE AnimalTypeID=@AnimalTypeID";
+            var query = @"DELETE FROM AnimalTypes WHERE AnimalTypeID=@AnimalTypeID";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myConnection))
                 {
                     myCommand.Parameters.AddWithValue("@AnimalTypeID", id);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Deleted Successfully!");
+            return new JsonResult("Успешно удалено!");
         }
     }
 }

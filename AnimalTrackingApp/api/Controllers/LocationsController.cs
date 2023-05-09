@@ -19,16 +19,15 @@ namespace api.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"SELECT LocationID, LocationName, LocationDescription, Latitude, Longitude FROM Locations";
+            var query = @"SELECT LocationID, LocationName, LocationDescription, Latitude, Longitude FROM Locations";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myConnection))
                 {
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
@@ -40,10 +39,9 @@ namespace api.Controllers
         [HttpPost]
         public JsonResult Post(Locations locations)
         {
-            string query = @"INSERT INTO Locations VALUES (@LocationName, @LocationDescription, @Latitude, @Longitude)";
+            var query = @"INSERT INTO Locations VALUES (@LocationName, @LocationDescription, @Latitude, @Longitude)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
@@ -53,22 +51,21 @@ namespace api.Controllers
                     myCommand.Parameters.AddWithValue("@LocationDescription", locations.LocationDescription);
                     myCommand.Parameters.AddWithValue("@Latitude", locations.Latitude);
                     myCommand.Parameters.AddWithValue("@Longitude", locations.Longitude);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Added Successfully!");
+            return new JsonResult("Успешно добавлено!");
         }
 
         [HttpPut]
         public JsonResult Put(Locations locations)
         {
-            string query = @"UPDATE Locations SET LocationName=@LocationName, LocationDescription=@LocationDescription, Latitude=@Latitude, Longitude=@Longitude WHERE LocationID=@LocationID";
+            var query = @"UPDATE Locations SET LocationName=@LocationName, LocationDescription=@LocationDescription, Latitude=@Latitude, Longitude=@Longitude WHERE LocationID=@LocationID";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
@@ -79,35 +76,34 @@ namespace api.Controllers
                     myCommand.Parameters.AddWithValue("@LocationDescription", locations.LocationDescription);
                     myCommand.Parameters.AddWithValue("@Latitude", locations.Latitude);
                     myCommand.Parameters.AddWithValue("@Longitude", locations.Longitude);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Updated Successfully!");
+            return new JsonResult("Успешно обновлено!");
         }
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            string query = @"DELETE FROM Locations WHERE LocationID=@LocationID";
+            var query = @"DELETE FROM Locations WHERE LocationID=@LocationID";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
-            SqlDataReader sqlDataReader;
+            var sqlDataSource = _configuration.GetConnectionString("AnimalTrackerCon");
             using (SqlConnection myConnection = new SqlConnection(sqlDataSource))
             {
                 myConnection.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myConnection))
                 {
                     myCommand.Parameters.AddWithValue("@LocationID", id);
-                    sqlDataReader = myCommand.ExecuteReader();
+                    var sqlDataReader = myCommand.ExecuteReader();
                     table.Load(sqlDataReader);
                     sqlDataReader.Close();
                 }
             }
 
-            return new JsonResult("Deleted Successfully!");
+            return new JsonResult("Успешно удалено!");
         }
     }
 }
