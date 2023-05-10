@@ -28,7 +28,7 @@ CREATE TABLE MovementPoints (
     MovementPointID INT PRIMARY KEY IDENTITY(1,1),
     AnimalID INT NOT NULL,
     LocationID INT NOT NULL,
-    DateTime DATE NOT NULL,
+    DateTime NVARCHAR(50) NOT NULL,
     FOREIGN KEY (AnimalID) REFERENCES Animals(AnimalID),
     FOREIGN KEY (LocationID) REFERENCES Locations(LocationID)
 );
