@@ -122,6 +122,7 @@ export class MovementPoints extends Component {
     addClick(){
         this.setState({
             modalTitle:"Добавить точку перемещения",
+            addModal: true,
             MovementPointID:0,
             AnimalID:"",
             LocationID:"",
@@ -390,14 +391,14 @@ export class MovementPoints extends Component {
         
 
 
-            {MovementPointID==0?
+            {MovementPointID===0?
             <button type="button"
             className="btn btn-primary float-start"
             onClick={()=>this.createClick()}
             >Создать</button>
             :null}
 
-            {MovementPointID!=0?
+            {MovementPointID!==0?
             <button type="button"
             className="btn btn-primary float-start"
             onClick={()=>this.updateClick()}
