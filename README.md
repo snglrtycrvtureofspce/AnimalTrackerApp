@@ -1,1 +1,3 @@
-# RESTful-APIs
+# AnimalTrackerApp
+\api - Server Side
+\ui - Client side
