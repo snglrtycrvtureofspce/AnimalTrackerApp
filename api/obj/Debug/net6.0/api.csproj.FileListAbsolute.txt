@@ -128,3 +128,4 @@ C:\Users\asp1r\snglrtycrvtureofspce\GitHub\AnimalTrackingApp\api\obj\Debug\net6.
 C:\Users\asp1r\snglrtycrvtureofspce\GitHub\AnimalTrackingApp\api\obj\Debug\net6.0\api.pdb
 C:\Users\asp1r\snglrtycrvtureofspce\GitHub\AnimalTrackingApp\api\obj\Debug\net6.0\api.genruntimeconfig.cache
 C:\Users\asp1r\snglrtycrvtureofspce\GitHub\AnimalTrackingApp\api\obj\Debug\net6.0\ref\api.dll
+C:\Users\asp1r\snglrtycrvtureofspce\GitHub\AnimalTrackingApp\api\bin\Debug\net6.0\Npgsql.dll

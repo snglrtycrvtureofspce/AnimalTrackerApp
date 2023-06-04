@@ -1,60 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
-import {Home} from './Home';
-import {AnimalTypes} from './AnimalTypes';
-import {Animals} from './Animals';
-import {Locations} from './Locations';
-import {MovementPoints} from './MovementPoints';
-import {BrowserRouter, Route, Switch, NavLink} from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import "./App.css";
 
-function App() {
+//components
+import Navbar from "./components/Navbar/Navbar";
+import Home from './components/Home/Home';
+import Footer from "./components/Footer/Footer";
+import Helps from "./components/Helps/Helps";
+
+import AnimalTypes from "./components/AnimalTypes/AnimalTypes";
+import Animals from "./components/Animals/Animals";
+import Locations from "./components/Locations/Locations";
+import MovementPoints from "./components/MovementPoints/MovementPoints";
+
+
+
+const App = () => {
+  const location = useLocation();
+  const theme = useSelector((state) => state.theme);
   return (
-    <BrowserRouter>
-    <div className="App container">
-      <h3 className="d-flex justify-content-center m-3">
-        Сервис для отслеживания перемещения животных
-      </h3>
+    <div className="App" style={theme}>
+      <Navbar />
+      <div className="app-content">
+        <TransitionGroup>
+          <CSSTransition timeout={300} classNames="fade" key={location.key}>
+            <Switch location={location}>
+              <Route path="/" exact>
+                <Redirect to="/home" />
+              </Route>
 
-      <nav className="navbar navbar-expand-sm bg-light navbar-dark">
-        <ul className="navbar-nav">
-          <li className="nav-item- m-1">
-            <NavLink className="btn btn-light btn-outline-primary" to="/home">
-              Домашняя страница
-            </NavLink>
-          </li>
-          <li className="nav-item- m-1">
-            <NavLink className="btn btn-light btn-outline-primary" to="/animaltypes">
-              Типы животных
-            </NavLink>
-          </li>
-          <li className="nav-item- m-1">
-            <NavLink className="btn btn-light btn-outline-primary" to="/animals">
-              Животные
-            </NavLink>
-          </li>
-          <li className="nav-item- m-1">
-            <NavLink className="btn btn-light btn-outline-primary" to="/locations">
-              Локации
-            </NavLink>
-          </li>
-          <li className="nav-item- m-1">
-            <NavLink className="btn btn-light btn-outline-primary" to="/movementpoints">
-              Точки перемещения
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+              <Route path="/home">
+                <Home />
+              </Route>
 
-      <Switch>
-        <Route path='/home' component={Home}/>
-        <Route path='/animaltypes' component={AnimalTypes}/>
-        <Route path='/animals' component={Animals}/>
-        <Route path='/locations' component={Locations}/>
-        <Route path='/movementpoints' component={MovementPoints}/>
-      </Switch>
+              <Route path="/helps">
+                <Helps />
+              </Route>
+
+              <Route path="/animaltypes">
+                <AnimalTypes />
+              </Route>
+
+              <Route path="/locations">
+                <Locations />
+              </Route>
+
+              <Route path="/movementpoints">
+                <MovementPoints />
+              </Route>
+
+              <Route path="/animals">
+                <Animals />
+              </Route>
+
+              <Route path="*">
+                <Redirect to="/home" />
+              </Route>
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
+      </div>
+      <Footer />
     </div>
-    </BrowserRouter>
   );
-}
+};
 
 export default App;
