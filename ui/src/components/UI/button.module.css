@@ -19,6 +19,6 @@
 .btn:disabled:active{
   background-color: #ccc;
   color: #292929;
-  border-color: #ccc;
+  border-color: #fff;
   cursor: not-allowed;
 }
