@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zrROF51DDTEUVhw1U/J7ijmRjXxhaH6apb+pGkV423IditGeq804quwNGkDKdu3VrQxVFDdzUP7981GWDgsXlA==",
+  "dgSpecHash": "ToZJ4RZkz7wIx9Ax3EMkw1C8Wxd5MED7+QrTPHda99V91l+mmoiAAA7J/HA7DPLxJPr77kEJ0wbulz2swk/Xrg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\asp1r\\snglrtycrvtureofspce\\GitHub\\AnimalTrackingApp\\api\\api.csproj",
+  "projectFilePath": "C:\\Users\\asp1r\\snglrtycrvtureofspce\\GitHub\\AnimalTrackerApp\\api\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\asp1r\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\asp1r\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

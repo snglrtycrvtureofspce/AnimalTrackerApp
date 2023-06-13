@@ -5,7 +5,7 @@ import "./App.css";
 
 //components
 import Navbar from "./components/Navbar/Navbar";
-import Home from './components/Home/Home';
+import Home from "./components/Home/Home";
 import Footer from "./components/Footer/Footer";
 import Helps from "./components/Helps/Helps";
 
@@ -13,8 +13,8 @@ import AnimalTypes from "./components/AnimalTypes/AnimalTypes";
 import Animals from "./components/Animals/Animals";
 import Locations from "./components/Locations/Locations";
 import MovementPoints from "./components/MovementPoints/MovementPoints";
-
-
+import HelpPage from "./components/HelpPage/HelpPage";
+import Report from "./components/Report/Report";
 
 const App = () => {
   const location = useLocation();
@@ -34,12 +34,12 @@ const App = () => {
                 <Home />
               </Route>
 
-              <Route path="/helps">
-                <Helps />
-              </Route>
-
               <Route path="/animaltypes">
                 <AnimalTypes />
+              </Route>
+
+              <Route path="/animals">
+                <Animals />
               </Route>
 
               <Route path="/locations">
@@ -50,8 +50,16 @@ const App = () => {
                 <MovementPoints />
               </Route>
 
-              <Route path="/animals">
-                <Animals />
+              <Route path="/report">
+                <Report />
+              </Route>
+
+              <Route path="/helppage">
+                <HelpPage />
+              </Route>
+
+              <Route path="/helps">
+                <Helps />
               </Route>
 
               <Route path="*">

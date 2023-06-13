@@ -25,6 +25,18 @@ export class Locations extends Component {
     };
   }
 
+  componentDidMount() {
+    this.refreshList();
+  }
+
+  refreshList() {
+    fetch(variables.API_URL + "locations")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ locationss: data, locationssWithoutFilter: data });
+      });
+  }
+
   FilterFn() {
     var LocationIDFilter = this.state.LocationIDFilter;
     var LocationNameFilter = this.state.LocationNameFilter;
@@ -99,18 +111,6 @@ export class Locations extends Component {
       this.FilterFn();
     });
   };
-
-  refreshList() {
-    fetch(variables.API_URL + "locations")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ locationss: data, locationssWithoutFilter: data });
-      });
-  }
-
-  componentDidMount() {
-    this.refreshList();
-  }
 
   changeLocationID = (e) => {
     this.setState({ LocationID: e.target.value });
@@ -260,11 +260,12 @@ export class Locations extends Component {
       LongitudeFilter,
       isModalOpen,
     } = this.state;
+
     return (
       <div>
         <button
           type="button"
-          className="btn btn-primary m-2 float-end"
+          className="btn btn-primary m-2 float-start"
           onClick={() => this.addClick()}
         >
           Добавить локацию
@@ -553,6 +554,7 @@ export class Locations extends Component {
             ))}
           </tbody>
         </table>
+
         <ReactModal
           isOpen={isModalOpen}
           onRequestClose={this.closeModal}
@@ -572,35 +574,43 @@ export class Locations extends Component {
 
             <div className="modal-body">
               <div className="row">
-                <div className="input-group mb-3"></div>
-                <span className="input-group-text">Имя локации</span>
+                <div className="col-6">
+                <label>Имя локации</label>
                 <input
                   type="text"
                   className="form-control"
                   value={LocationName}
                   onChange={this.changeLocationName}
                 />
-                <span className="input-group-text">Описание локации</span>
+              </div>
+              <div className="col-6">
+                <label>Описание локации</label>
                 <input
                   type="text"
                   className="form-control"
                   value={LocationDescription}
                   onChange={this.changeLocationDescription}
                 />
-                <span className="input-group-text">Широта</span>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={Latitude}
-                  onChange={this.changeLatitude}
-                />
-                <span className="input-group-text">Долгота</span>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={Longitude}
-                  onChange={this.changeLongitude}
-                />
+                </div>
+                <div className="col-6">
+                  <label>Широта</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={Latitude}
+                    onChange={this.changeLatitude}
+                  />
+                  </div>
+                  <div className="col-6">
+                    <label>Долгота</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={Longitude}
+                      onChange={this.changeLongitude}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="modal-footer">
@@ -631,7 +641,6 @@ export class Locations extends Component {
                   Закрыть
                 </button>
               </div>
-            </div>
           </div>
         </ReactModal>
       </div>

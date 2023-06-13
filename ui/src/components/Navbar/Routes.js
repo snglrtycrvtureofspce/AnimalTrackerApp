@@ -22,6 +22,14 @@ function Dropdown(props) {
             <NavLink to="/movementpoints" activeClassName="active">
                 <div className="navs">Точки перемещения</div>
             </NavLink>
+
+            <NavLink to="/report" activeClassName="active">
+                <div className="navs">Отчёт</div>
+            </NavLink>
+
+            <NavLink to="/helppage" activeClassName="active">
+                <div className="navs">Справка</div>
+            </NavLink>
             
             <NavLink to="/helps" activeClassName="active">
                 <div className="navs">Обратная связь</div>

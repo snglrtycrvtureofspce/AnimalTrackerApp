@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import ReactModal from "react-modal";
+import jsPDF from 'jspdf';
 import { variables } from "../../Variables.js";
 
-export class MovementPoints extends Component {
+export class Report extends Component {
   constructor(props) {
     super(props);
 
@@ -138,126 +138,45 @@ export class MovementPoints extends Component {
     this.setState({ isModalOpen: false });
   };
 
-  addClick() {
-    this.setState({
-      modalTitle: "Добавить точку перемещения",
-      MovementPointID: 0,
-      AnimalID: "",
-      LocationID: "",
-      DateTime: "",
-    });
-    this.openModal("add");
-  }
-  editClick(at) {
-    this.setState({
-      modalTitle: "Изменить точку перемещения",
-      MovementPointID: at.MovementPointID,
-      AnimalID: at.AnimalID,
-      LocationID: at.LocationID,
-      DateTime: at.DateTime,
-    });
-    this.openModal("edit");
-  }
-
-  createClick = () => {
-    fetch(variables.API_URL + "movementpoints", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        AnimalID: this.state.AnimalID,
-        LocationID: this.state.LocationID,
-        DateTime: this.state.DateTime,
-      }),
-    })
-      .then((data) => {
-        alert("Точка перемещения успешно добавлена");
-        this.refreshList();
-        this.closeModal();
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  updateClick = () => {
-    fetch(variables.API_URL + "movementpoints", {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        MovementPointID: this.state.MovementPointID,
-        AnimalID: this.state.AnimalID,
-        LocationID: this.state.LocationID,
-        DateTime: this.state.DateTime,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Ошибка при изменении точки перемещения");
-        }
-      })
-      .then((data) => {
-        alert("Точка перемещения успешно изменена");
-        this.refreshList();
-        this.closeModal();
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
-
-  deleteClick(id) {
-    if (
-      window.confirm("Вы уверены, что хотите удалить эту точку перемещения?")
-    ) {
-      fetch(variables.API_URL + "movementpoints/" + id, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert("Точка перемещения успешно удалена");
-          this.refreshList();
-        });
-    }
-  }
-
+  createReport = () => {
+    const { movementpointss } = this.state;
   
+    // Создание нового документа PDF
+    const doc = new jsPDF();
+    let yPos = 20;
+  
+    doc.setFont("Arial", "win1251");
+    doc.text('Отчёт по таблице:', 10, yPos);
+    yPos += 10;
+  
+    movementpointss.forEach((item) => {
+        doc.setFont("Arial", "win1251");
+      doc.text(
+        `ID Точки перемещения: ${item.MovementPointID}, ID Животного: ${item.AnimalID}, ID Локации: ${item.LocationID}, Дата посещения: ${item.DateTime}`,
+        10,
+        yPos
+      );
+      yPos += 10;
+    });
+  
+    // Сохранение файла
+    doc.save('отчёт.pdf');
+  };
+  
+
   render() {
     const {
-      animalss,
-      locationss,
       movementpointss,
-      modalTitle,
-      MovementPointID,
-      AnimalID,
-      LocationID,
-      DateTime,
 
       MovementPointIDFilter,
       AnimalIDFilter,
       LocationIDFilter,
       DateTimeFilter,
-      isModalOpen,
     } = this.state;
     return (
       <div>
-        <button
-          type="button"
-          className="btn btn-primary m-2 start-end"
-          onClick={() => this.addClick()}
-        >
-          Добавить точку перемещения
+        <button type="button" className="btn btn-primary" onClick={this.createReport}>
+        Создать отчёт
         </button>
         <table className="table table-striped">
           <thead>
@@ -442,7 +361,6 @@ export class MovementPoints extends Component {
                 </div>
                 Дата посещения
               </th>
-              <th>Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -452,140 +370,13 @@ export class MovementPoints extends Component {
                 <td>{at.AnimalID}</td>
                 <td>{at.LocationID}</td>
                 <td>{at.DateTime}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-light mr-1"
-                    onClick={() => this.editClick(at)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-pencil-square"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                      <path
-                        fillRule="evenodd"
-                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                      />
-                    </svg>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-light mr-1"
-                    onClick={() => this.deleteClick(at.MovementPointID)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-trash-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                    </svg>
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        <ReactModal
-          isOpen={isModalOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Модальное окно"
-          ariaHideApp={false}
-          className="modal-dialog modal-lg modal-dialog-centered"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{modalTitle}</h5>
-              <button type="button" className="btn-close"></button>
-            </div>
-
-            <div className="modal-body">
-              <div className="row">
-                <span className="input-group-text">ID Животного</span>
-                <select
-                  className="form-select"
-                  value={AnimalID}
-                  onChange={(e) => this.setState({ AnimalID: e.target.value })}
-                >
-                  {animalss.map((animal) => (
-                    <option key={animal.AnimalID} value={animal.AnimalID}>
-                      {animal.AnimalName}
-                    </option>
-                  ))}
-                </select>
-
-                <span className="input-group-text">ID Локации</span>
-                <select
-                  className="form-select"
-                  value={LocationID}
-                  onChange={(e) =>
-                    this.setState({ LocationID: e.target.value })
-                  }
-                >
-                  {locationss.map((location) => (
-                    <option
-                      key={location.LocationID}
-                      value={location.LocationID}
-                    >
-                      {location.LocationName}
-                    </option>
-                  ))}
-                </select>
-
-                <div className="input-group mb-3"></div>
-                <span className="input-group-text">Дата посещения</span>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={DateTime}
-                  onChange={this.changeDateTime}
-                />
-              </div>
-
-              <div className="modal-footer">
-                {MovementPointID === 0 ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => this.createClick()}
-                  >
-                    Создать
-                  </button>
-                ) : null}
-
-                {MovementPointID !== 0 ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => this.updateClick()}
-                  >
-                    Обновить
-                  </button>
-                ) : null}
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={this.closeModal}
-                >
-                  Закрыть
-                </button>
-              </div>
-            </div>
-          </div>
-        </ReactModal>
       </div>
     );
   }
 }
 
-export default MovementPoints;
+export default Report;

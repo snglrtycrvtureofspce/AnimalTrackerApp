@@ -416,6 +416,7 @@ export class AnimalTypes extends Component {
             ))}
           </tbody>
         </table>
+        
         <ReactModal
           isOpen={isModalOpen}
           onRequestClose={this.closeModal}
@@ -455,6 +456,7 @@ export class AnimalTypes extends Component {
                 </div>
               </div>
             </div>
+
             <div className="modal-footer">
               {AnimalTypeID === 0 ? (
                 <button
@@ -465,6 +467,7 @@ export class AnimalTypes extends Component {
                   Добавить
                 </button>
               ) : null}
+
               {AnimalTypeID !== 0 ? (
                 <button
                   type="button"
